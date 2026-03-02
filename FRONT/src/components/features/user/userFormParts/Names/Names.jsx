@@ -1,7 +1,7 @@
 import backend from '@/api/config/axios.js';
 import useText from '@/contexts/App/hooks/useText.js';
 import { useAsyncFieldAvailability } from '@/hooks/useAsyncFieldAvailability.js';
-import useSharedFormValidators from '@/hooks/useSharedFormValidators.js';
+import useSharedFormValidators from '@/hooks/form/useSharedFormValidators.js';
 import defaultFormConfig from '@/utils/defaultFormConfig.js';
 import Fieldset from '@c/ui/form/Fieldset/Fieldset.jsx';
 import Form from '@c/ui/form/Form/Form.jsx';

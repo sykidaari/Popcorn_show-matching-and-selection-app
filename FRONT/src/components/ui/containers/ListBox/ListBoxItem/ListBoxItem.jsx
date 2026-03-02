@@ -2,7 +2,7 @@ import useText from '@/contexts/App/hooks/useText';
 import cN from '@/utils/classNameManager';
 import { useState } from 'react';
 
-const ListBoxItem = ({ children, className, onClick, isNew }) => {
+const ListBoxItem = ({ children, className, onClick, isNew, disabled }) => {
   const isNewText = useText('features.isNewItem');
 
   // internal isNew so isNew visual is removed inmediately upon interaction with item
@@ -11,8 +11,10 @@ const ListBoxItem = ({ children, className, onClick, isNew }) => {
   return (
     <li
       className={cN(
-        'w-full max-mobile:*:max-w-xs *:m-auto rounded-box relative',
-        className
+        'w-full max-mobile:*:max-w-xs *:m-auto rounded-box relative bg-base-100 hover:bg-base-300',
+        className,
+        disabled &&
+          'bg-base-100/50 pointer-events-none **:text-base-300 **:border-base-300'
       )}
     >
       {renderIsNew && (

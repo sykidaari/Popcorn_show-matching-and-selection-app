@@ -45,8 +45,8 @@ const UserProfileCard = ({
               userImg={user.img}
               className={cN(
                 '*:size-30',
-                minimal ? '*:size-8' : 'max-tiny:*:size-20',
-                smallerImg && '*:size-25'
+                smallerImg && '*:size-25',
+                minimal ? '*:size-8' : 'max-tiny:*:size-20'
               )}
             />
           </div>

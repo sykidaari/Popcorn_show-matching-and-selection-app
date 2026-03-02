@@ -18,7 +18,7 @@ const useMarkAllItemsAsSeen = (routeStart, shouldRun, relatedQueryKey) => {
   useEffect(() => {
     if (!shouldRun) return;
 
-    mutate(routeStart);
+    mutate();
   }, [mutate, routeStart, shouldRun]);
 };
 

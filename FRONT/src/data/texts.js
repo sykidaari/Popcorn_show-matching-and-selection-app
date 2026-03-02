@@ -13,14 +13,14 @@ const TEXTS = {
         serverProblem:
           'Something went wrong, please refresh the page or try again later.'
       },
-      searchBar: { noResults: 'No results found' }
+      searchBar: { noResults: 'No results found' },
+      next: 'Next'
     },
 
     features: {
       user: {
         relation: { self: 'Me', friend: 'Friend' },
         userFormParts: {
-          next: 'Next',
           locale: {
             labels: { country: 'Country', language: 'Language' }
           },
@@ -75,9 +75,7 @@ const TEXTS = {
             },
             sessions: {
               title: 'Session requests',
-              noRequests: 'You have no pending requests.',
-
-              session: { invite: 'Invite friends' }
+              noRequests: 'You have no pending requests.'
             }
           }
         }
@@ -106,7 +104,15 @@ const TEXTS = {
           removeFriendship: 'Remove friend'
         }
       },
-      sessions: { createSession: 'Create new session' },
+      sessions: {
+        createSession: 'Create new session',
+        session: {
+          invite: {
+            title: 'Invite friends',
+            maxAmount: 'Sessions can have up to 6 participants'
+          }
+        }
+      },
       isNewItem: 'NEW'
     },
 

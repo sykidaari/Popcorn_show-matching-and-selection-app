@@ -1,12 +1,23 @@
 import backend from '@/api/config/axios.js';
 import useText from '@/contexts/App/hooks/useText.js';
+import useMultiStepForm from '@/hooks/form/useMultiStepForm';
 import { useLoginMutation } from '@/hooks/useLoginMutation.js';
+import useSteps from '@/hooks/useSteps';
 import { IS_DEV } from '@/utils/env';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-export const useMultiStepRegister = (stayLoggedInChecked, setServerError) => {
-  const [formData, setFormData] = useState({});
+export const useMultiStepRegister = () => {
+  const { formData, saveStepData } = useMultiStepForm();
+  const { step, next, isStep } = useSteps();
+
+  const [stayLoggedInChecked, setStayLoggedInChecked] = useState(true);
+  const [serverError, setServerError] = useState(null);
+
+  const imageSelected = !!formData.img;
+
+  const setImg = (file) => saveStepData({ img: file });
+  const clearServerError = () => setServerError(null);
 
   const loginMutation = useLoginMutation(stayLoggedInChecked, () => {});
   const serverProblemText = useText('ui.error.serverProblem');
@@ -19,7 +30,7 @@ export const useMultiStepRegister = (stayLoggedInChecked, setServerError) => {
       const { img, ...registerPayload } = formData;
 
       const { data } = await backend.post('/user/register', registerPayload);
-      const userId = data.userId;
+      const userId = data.user?._id;
 
       try {
         await loginMutation.mutateAsync({
@@ -49,13 +60,23 @@ export const useMultiStepRegister = (stayLoggedInChecked, setServerError) => {
     }
   });
 
-  const saveStepData = (data) => setFormData((prev) => ({ ...prev, ...data }));
-
   return {
+    step,
+    next,
+    isStep,
+
     saveStepData,
+    setImg,
+    imageSelected,
+
     submitAll: registerMutation.mutate,
     submitAllAsync: registerMutation.mutateAsync,
     isSubmitting: registerMutation.isPending || loginMutation.isPending,
-    error: registerMutation.error
+    error: registerMutation.error,
+
+    stayLoggedInChecked,
+    setStayLoggedInChecked,
+    serverError,
+    clearServerError
   };
 };

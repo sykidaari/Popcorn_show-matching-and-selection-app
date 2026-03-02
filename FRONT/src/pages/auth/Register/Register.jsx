@@ -1,15 +1,13 @@
 import useText from '@/contexts/App/hooks/useText.js';
 import { useMultiStepRegister } from '@/pages/auth/Register/hooks.js';
-import cN from '@/utils/classNameManager.js';
 import Email from '@c/features/user/userFormParts/Email/Email.jsx';
 import Img from '@c/features/user/userFormParts/Img/Img.jsx';
 import Locale from '@c/features/user/userFormParts/Locale/Locale.jsx';
 import Names from '@c/features/user/userFormParts/Names/Names.jsx';
 import Password from '@c/features/user/userFormParts/Password/Password.jsx';
 import StayLoggedInCheckBox from '@c/ui/form/StayLoggedInCheckBox/StayLoggedInCheckBox.jsx';
+import StepsVisualizer from '@c/ui/StepsVisualizer/StepsVisualizer';
 
-import { useState } from 'react';
-// IMG UPLOAD NOT WORKING!!!
 const Register = () => {
   const {
     legends: {
@@ -23,68 +21,55 @@ const Register = () => {
     finish: finishText
   } = useText('pages.auth.register');
 
-  const nextText = useText('features.user.userFormParts.next');
+  const nextText = useText('ui.next');
 
-  const [step, setStep] = useState(1);
-  const next = () => setStep((s) => s + 1);
-
-  const [imageSelected, setImageSelected] = useState(false);
-  const [stayLoggedInChecked, setStayLoggedInChecked] = useState(true);
-
-  const [serverError, setServerError] = useState(null);
-
-  const { saveStepData, submitAll, isSubmitting } = useMultiStepRegister(
+  const {
+    saveStepData,
+    setImg,
+    submitAll,
+    isSubmitting,
+    step,
+    next,
+    isStep,
+    imageSelected,
     stayLoggedInChecked,
-    setServerError
-  );
-
-  const handleStep = (data) => {
-    saveStepData(data);
-    next();
-  };
-
-  const handleImgStep = (data) => {
-    console.log('handleImgStep data', data);
-    saveStepData(data);
-
-    setServerError(null);
-    submitAll();
-  };
+    setStayLoggedInChecked,
+    serverError,
+    clearServerError
+  } = useMultiStepRegister();
 
   const sharedProps = {
-    onNext: handleStep,
+    onNext: (data) => {
+      saveStepData(data);
+      next();
+    },
     hasButton: true,
     buttonContent: nextText
   };
 
   return (
     <div className='w-full flex flex-col items-center gap-5'>
-      <ul className='steps'>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <li key={i} className={cN('step', step >= i && 'step-primary')} />
-        ))}
-      </ul>
+      <StepsVisualizer currentStep={step} totalSteps={5} />
 
       {serverError && <p className='text-error text-sm mt-2'>{serverError}</p>}
 
       <div className='w-full'>
-        {step === 1 && <Locale {...sharedProps} legendText={localeLegend} />}
+        {isStep(1) && <Locale {...sharedProps} legendText={localeLegend} />}
+        {isStep(2) && <Email {...sharedProps} legendText={emailLegend} />}
+        {isStep(3) && <Names {...sharedProps} legendText={namesLegend} />}
+        {isStep(4) && <Password {...sharedProps} legendText={passwordLegend} />}
 
-        {step === 2 && <Email {...sharedProps} legendText={emailLegend} />}
-
-        {step === 3 && <Names {...sharedProps} legendText={namesLegend} />}
-
-        {step === 4 && (
-          <Password {...sharedProps} legendText={passwordLegend} />
-        )}
-
-        {step === 5 && (
+        {isStep(5) && (
           <Img
             hasButton
             legendText={imgLegend}
-            setSelected={setImageSelected}
             buttonContent={imageSelected ? finishText : skipText}
-            onNext={handleImgStep}
+            onImgChange={setImg}
+            onNext={(data) => {
+              saveStepData(data);
+              clearServerError();
+              submitAll();
+            }}
             isSubmitting={isSubmitting}
           >
             <StayLoggedInCheckBox

@@ -8,10 +8,10 @@ import { useState } from 'react';
 
 const Img = ({
   onNext,
+  onImgChange,
   legendText,
   hasButton,
   buttonContent,
-  setSelected,
   children,
   isSubmitting
 }) => {
@@ -30,9 +30,9 @@ const Img = ({
   const handleChange = (e) => {
     const f = e.target.files?.[0] || null;
 
-    setSelected(false);
     setImgError(null);
     setFile(null);
+    onImgChange?.(null);
 
     if (!f) return;
 
@@ -46,15 +46,12 @@ const Img = ({
       return;
     }
 
-    setImgError(null);
-    setSelected(true);
     setFile(f);
+    onImgChange?.(f);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log('IMG SUBMIT', file);
-
     onNext({ img: file });
   };
 
@@ -70,6 +67,7 @@ const Img = ({
             onChange={handleChange}
           />
         </Label>
+
         {hasButton && (
           <SubmitButton
             className={cN(imgError && 'btn-disabled')}
@@ -77,7 +75,8 @@ const Img = ({
           >
             {buttonContent}
           </SubmitButton>
-        )}{' '}
+        )}
+
         {children}
       </Fieldset>
     </Form>

@@ -10,7 +10,14 @@ import ListBoxItem from '@c/ui/containers/ListBox/ListBoxItem/ListBoxItem';
 import SearchBar from '@c/ui/SearchBar/SearchBar';
 import { useState } from 'react';
 
-const FriendsSection = () => {
+const FriendsSection = ({
+  minimalItems = false,
+  listItems = false,
+  onClick,
+  seenFnsDisabled = false,
+  additionalListItemContent,
+  listItemDisabled
+}) => {
   const {
     title: titleText,
     noFriends: noItemsText,
@@ -20,10 +27,12 @@ const FriendsSection = () => {
   const currentUserId = useCurrentUserId();
 
   const { data, isPending, isError, isSuccess } = useFriendsList();
-  console.log(data);
+
   useMarkAllItemsAsSeen(
     `/user/${currentUserId}/private/friends`,
-    isSuccess,
+
+    // can disable this hook
+    isSuccess && !seenFnsDisabled,
     'friendsList'
   );
 
@@ -65,9 +74,12 @@ const FriendsSection = () => {
       >
         {filteredFriends.map((item) => (
           <ListBoxItem
+            disabled={listItemDisabled?.(item)}
             key={item._id}
-            isNew={item.isNewItem}
+            isNew={!seenFnsDisabled && item.isNewItem}
             onClick={() => {
+              if (onClick) return onClick(item);
+
               setSelectedUser(item.user);
               setSelectedUserOpen(true);
             }}
@@ -76,7 +88,10 @@ const FriendsSection = () => {
               user={item.user}
               hideRelationshipBanner
               smallerImg
+              minimal={minimalItems}
+              listItem={listItems}
             />
+            {additionalListItemContent?.(item)}
           </ListBoxItem>
         ))}
       </ListBox>

@@ -1,6 +1,6 @@
 import ERR from '@/constants/domain/errorCodes.js';
 import useText from '@/contexts/App/hooks/useText.js';
-import useSharedFormValidators from '@/hooks/useSharedFormValidators.js';
+import useSharedFormValidators from '@/hooks/form/useSharedFormValidators.js';
 import { useLoginMutation } from '@/hooks/useLoginMutation.js';
 import defaultFormConfig from '@/utils/defaultFormConfig.js';
 import { isServerProblem } from '@/utils/helpers.js';

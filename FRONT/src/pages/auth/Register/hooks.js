@@ -2,6 +2,7 @@ import backend from '@/api/config/axios.js';
 import useText from '@/contexts/App/hooks/useText.js';
 import useMultiStepForm from '@/hooks/form/useMultiStepForm';
 import { useLoginMutation } from '@/hooks/useLoginMutation.js';
+import useImgUpload from '@/hooks/user/currentUser/useImgUpload';
 import useSteps from '@/hooks/useSteps';
 import { IS_DEV } from '@/utils/env';
 import { useMutation } from '@tanstack/react-query';
@@ -20,10 +21,13 @@ export const useMultiStepRegister = () => {
   const clearServerError = () => setServerError(null);
 
   const loginMutation = useLoginMutation(stayLoggedInChecked, () => {});
+
   const serverProblemText = useText('ui.error.serverProblem');
   const { loginProblem: loginProblemText } = useText(
     'pages.auth.register.errors'
   );
+
+  const { uploadImg } = useImgUpload();
 
   const registerMutation = useMutation({
     mutationFn: async () => {
@@ -43,13 +47,7 @@ export const useMultiStepRegister = () => {
       }
 
       if (img) {
-        try {
-          const fd = new FormData();
-          fd.append('img', img);
-          await backend.patch(`/user/${userId}/img`, fd);
-        } catch (error) {
-          if (IS_DEV) console.log(error);
-        }
+        await uploadImg(img, userId);
       }
 
       return { success: true };

@@ -179,7 +179,6 @@ export const uploadProfilePicture = async (req, res, next) => {
     user.img = imgUrl;
     await user.save();
 
-    console.log('worked');
     return res.status(200).json({
       message: OK.user.profilePictureUpdated,
       img: imgUrl

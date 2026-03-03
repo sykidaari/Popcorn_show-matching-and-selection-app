@@ -11,7 +11,7 @@ import TextField from '@c/ui/form/TextField/TextField.jsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const Email = ({ onNext, legendText, hasButton, buttonContent }) => {
+const Email = ({ onSubmit, legendText, hasButton, buttonContent }) => {
   const {
     label: labelText,
     validation: validationText,
@@ -48,14 +48,15 @@ const Email = ({ onNext, legendText, hasButton, buttonContent }) => {
     }
   });
 
-  const onSubmit = async (formData) => {
-    const result = await runCheck();
-    if (result.data?.available === false) return;
-    onNext(formData);
-  };
-
   return (
-    <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      noValidate
+      onSubmit={handleSubmit(async (formData) => {
+        const result = await runCheck();
+        if (result.data?.available === false) return;
+        onSubmit(formData);
+      })}
+    >
       <Fieldset legendText={legendText}>
         <TextField
           labelText={labelText}

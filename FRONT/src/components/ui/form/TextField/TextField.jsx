@@ -17,7 +17,7 @@ const TextField = ({
       <input
         {...props}
         type={type}
-        className={cN('input', className)}
+        className={cN('input w-full', className)}
         placeholder={placeholder}
       />
       {children}

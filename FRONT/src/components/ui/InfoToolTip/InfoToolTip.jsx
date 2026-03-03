@@ -3,7 +3,13 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const InfoToolTip = ({ text, className }) => {
   return (
-    <div className={cN('tooltip size-6', className)} data-tip={text}>
+    <div
+      className={cN(
+        'tooltip size-6 max-mobile:before:text-xs max-mobile:before:max-w-[60dvw]',
+        className
+      )}
+      data-tip={text}
+    >
       <InformationCircleIcon />
     </div>
   );

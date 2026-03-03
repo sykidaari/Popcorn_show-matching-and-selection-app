@@ -27,7 +27,7 @@ export const useMultiStepRegister = () => {
     'pages.auth.register.errors'
   );
 
-  const { uploadImg } = useImgUpload();
+  const { uploadImgSafe } = useImgUpload();
 
   const registerMutation = useMutation({
     mutationFn: async () => {
@@ -47,7 +47,7 @@ export const useMultiStepRegister = () => {
       }
 
       if (img) {
-        await uploadImg(img, userId);
+        await uploadImgSafe(img, userId);
       }
 
       return { success: true };

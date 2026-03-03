@@ -1,19 +1,30 @@
 import COUNTRIES_AND_SERVICES from '@/constants/domain/countriesAndServices.js';
 import { useMemo } from 'react';
 
-export const useEnrichedServices = (streamingOptions) => {
+export const useEnrichedServices = ({
+  streamingOptions,
+  countryCode,
+  includeAll = false
+}) => {
   return useMemo(() => {
-    if (!streamingOptions?.[0]?.services) return [];
+    const effectiveCountry = countryCode ?? streamingOptions?.[0]?.country;
 
-    const countryCode = streamingOptions[0].country;
+    if (!effectiveCountry) return [];
 
     const countryConfig = COUNTRIES_AND_SERVICES.find(
-      (c) => c.countryCode === countryCode
+      (c) => c.countryCode === effectiveCountry
     );
 
+    if (!countryConfig) return [];
+
+    const sourceServices =
+      includeAll || !streamingOptions?.[0]?.services
+        ? countryConfig.services
+        : streamingOptions[0].services;
+
     return Object.values(
-      streamingOptions[0].services.reduce((acc, s) => {
-        const meta = countryConfig?.services?.find((cs) => cs.id === s.id);
+      sourceServices.reduce((acc, s) => {
+        const meta = countryConfig.services.find((cs) => cs.id === s.id);
 
         acc[s.id] = {
           ...s,
@@ -24,5 +35,5 @@ export const useEnrichedServices = (streamingOptions) => {
         return acc;
       }, {})
     );
-  }, [streamingOptions]);
+  }, [streamingOptions, countryCode, includeAll]);
 };

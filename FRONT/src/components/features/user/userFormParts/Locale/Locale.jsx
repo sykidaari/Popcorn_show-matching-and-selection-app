@@ -3,13 +3,14 @@ import LANGUAGES from '@/constants/domain/languages.js';
 import useAppContext from '@/contexts/App/hooks/useAppContext.js';
 import useText from '@/contexts/App/hooks/useText.js';
 import defaultFormConfig from '@/utils/defaultFormConfig.js';
+import CountrySelect from '@c/ui/CountrySelect/CountrySelect';
 import Fieldset from '@c/ui/form/Fieldset/Fieldset.jsx';
 import Form from '@c/ui/form/Form/Form.jsx';
 import Label from '@c/ui/form/Label/Label.jsx';
 import SubmitButton from '@c/ui/form/SubmitButton/SubmitButton.jsx';
 import { useForm } from 'react-hook-form';
 
-const Locale = ({ onNext, legendText, hasButton, buttonContent }) => {
+const Locale = ({ onSubmit, legendText, hasButton, buttonContent }) => {
   const {
     labels: { country: countryText, language: LanguageText }
   } = useText('features.user.userFormParts.locale');
@@ -28,15 +29,15 @@ const Locale = ({ onNext, legendText, hasButton, buttonContent }) => {
     })
   );
 
-  const handleLocaleSubmit = (data) => {
-    onNext({
-      countryCode: data.country,
-      languageCode: data.language
-    });
-  };
-
   return (
-    <Form onSubmit={handleSubmit(handleLocaleSubmit)}>
+    <Form
+      onSubmit={handleSubmit((data) => {
+        onSubmit({
+          countryCode: data.country,
+          languageCode: data.language
+        });
+      })}
+    >
       <Fieldset legendText={legendText}>
         <Label>
           {LanguageText}
@@ -53,20 +54,11 @@ const Locale = ({ onNext, legendText, hasButton, buttonContent }) => {
           </select>
         </Label>
 
-        <Label>
-          {countryText}
-          <select
-            className='select'
-            {...register('country')}
-            onChange={(e) => setCountry(e.target.value)}
-          >
-            {COUNTRIES_AND_SERVICES.map(({ countryCode, country }) => (
-              <option key={countryCode} value={countryCode}>
-                {country}
-              </option>
-            ))}
-          </select>
-        </Label>
+        <CountrySelect
+          text={countryText}
+          onChange={setCountry}
+          {...register('country')}
+        />
 
         {hasButton && <SubmitButton>{buttonContent}</SubmitButton>}
       </Fieldset>

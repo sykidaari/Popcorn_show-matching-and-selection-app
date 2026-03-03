@@ -1,5 +1,5 @@
-import useText from '@/contexts/App/hooks/useText.js';
 import useFetchMedias from '@/hooks/media/useFetchMedias.js';
+import useKeywordPlaceholderText from '@/hooks/media/useKeywordPlaceholderText';
 import useMediaSwipeIndex from '@/hooks/media/useMediaSwipeIndex.js';
 import usePrefetchNextPage from '@/hooks/media/usePrefetchNetxPage.js';
 import MediaSection from '@c/features/media/MediaSection/MediaSection.jsx';
@@ -9,11 +9,7 @@ import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
 const Discover = () => {
-  const searchSuggestions = useText('pages.private.discover.searchSuggestions');
-  const [placeholderText] = useState(() => {
-    const i = Math.floor(Math.random() * searchSuggestions.length);
-    return searchSuggestions[i];
-  });
+  const placeholderText = useKeywordPlaceholderText();
   const [query, setQuery] = useState('');
   const keyword = query.trim();
 

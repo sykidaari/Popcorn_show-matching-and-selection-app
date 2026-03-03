@@ -20,11 +20,14 @@ import Discover from '@/pages/private/Discover/Discover.jsx';
 import People from '@/pages/private/People/People.jsx';
 import Session from '@/pages/private/Sessions/Session/Session';
 import CreateSession from '@/pages/private/Sessions/CreateSession/CreateSession';
+import useCurrentUserId from '@/contexts/UserSession/hooks/useCurrentUserId';
 
 //! REGISTER IMG UPLOAD DOESN'T WORK
 
 function App() {
   const isInitializing = useIsInitializing();
+
+  console.log(useCurrentUserId());
 
   if (isInitializing)
     return (

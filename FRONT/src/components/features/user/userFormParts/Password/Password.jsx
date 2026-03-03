@@ -10,7 +10,7 @@ import InfoToolTip from '@c/ui/InfoToolTip/InfoToolTip.jsx';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-const Password = ({ onNext, legendText, hasButton, buttonContent }) => {
+const Password = ({ onSubmit, legendText, hasButton, buttonContent }) => {
   const {
     password: {
       label: passLabelText,
@@ -31,13 +31,14 @@ const Password = ({ onNext, legendText, hasButton, buttonContent }) => {
 
   const { required } = useSharedFormValidators();
 
-  const onSubmit = (data) => {
-    const { password } = data;
-    onNext({ password });
-  };
-
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <Form
+      onSubmit={handleSubmit((data) => {
+        const { password } = data;
+        onSubmit({ password });
+      })}
+      noValidate
+    >
       <Fieldset legendText={legendText}>
         <PasswordField
           labelText={passLabelText}
@@ -54,7 +55,7 @@ const Password = ({ onNext, legendText, hasButton, buttonContent }) => {
         >
           <InfoToolTip
             text={explanationText}
-            className='absolute right-0 -top-3.5'
+            className='absolute right-0 -top-3.5 max-mobile:tooltip-left'
           />
         </PasswordField>
 

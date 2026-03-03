@@ -13,7 +13,7 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const Names = ({ onNext, legendText, hasButton, buttonContent }) => {
+const Names = ({ onSubmit, legendText, hasButton, buttonContent }) => {
   const {
     userName: {
       label: userLabelText,
@@ -59,12 +59,6 @@ const Names = ({ onNext, legendText, hasButton, buttonContent }) => {
     }
   });
 
-  const onSubmit = async (formData) => {
-    const result = await runCheck();
-    if (result.data?.available === false) return;
-    onNext(formData);
-  };
-
   const lengthValidator = {
     minLength: {
       value: 3,
@@ -77,7 +71,14 @@ const Names = ({ onNext, legendText, hasButton, buttonContent }) => {
   };
 
   return (
-    <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      noValidate
+      onSubmit={handleSubmit(async (formData) => {
+        const result = await runCheck();
+        if (result.data?.available === false) return;
+        onSubmit(formData);
+      })}
+    >
       <Fieldset legendText={legendText}>
         <TextField
           labelText={userLabelText}
@@ -95,7 +96,7 @@ const Names = ({ onNext, legendText, hasButton, buttonContent }) => {
         >
           <InfoToolTip
             text={explanationText}
-            className='absolute right-0 -top-3.5'
+            className='absolute right-0 -top-3.5 max-mobile:tooltip-left'
           />
         </TextField>
 

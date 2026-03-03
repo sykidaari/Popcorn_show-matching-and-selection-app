@@ -14,7 +14,22 @@ const TEXTS = {
           'Something went wrong, please refresh the page or try again later.'
       },
       searchBar: { noResults: 'No results found' },
-      next: 'Next'
+      next: 'Next',
+
+      keywordSuggestions: [
+        'zombie movies',
+        'sci-fi thrillers',
+        'romantic comedies',
+        'time travel movies',
+        'heist films',
+        'psychological thrillers',
+        'fantasy adventure',
+        'cozy movies',
+        'post-apocalyptic',
+        'mind-bending films',
+        'superhero movies',
+        'space adventure'
+      ]
     },
 
     features: {
@@ -106,11 +121,63 @@ const TEXTS = {
       },
       sessions: {
         createSession: 'Create new session',
+        noFriends:
+          'You have no friends yet! Add friends first to start a session',
         session: {
           invite: {
             title: 'Invite friends',
             maxAmount: 'Sessions can have up to 6 participants'
-          }
+          },
+          parameters: {
+            title: 'Design your session',
+            name: {
+              legend: 'Name your session (optional)',
+              tooShort: 'Must be at least 3 characters long',
+              tooLong: "Can't be over 30 characters long"
+            },
+            mediaType: {
+              legend: 'What shows do you want to see?',
+              options: { all: 'All', movies: 'Movies', series: 'Series' }
+            },
+            genres: {
+              legend: 'Choose genres (optional — defaults to all)',
+              info: 'Fewer genres make results more focused.',
+              options: {
+                action: 'Action',
+                adventure: 'Adventure',
+                animation: 'Animation',
+                comedy: 'Comedy',
+                crime: 'Crime',
+                documentary: 'Documentary',
+                drama: 'Drama',
+                family: 'Family',
+                fantasy: 'Fantasy',
+                history: 'History',
+                horror: 'Horror',
+                music: 'Music',
+                mystery: 'Mystery',
+                news: 'News',
+                reality: 'Reality',
+                romance: 'Romance',
+                scifi: 'SciFi',
+                talk: 'Talk',
+                thriller: 'Thriller',
+                war: 'War',
+                western: 'Western'
+              }
+            },
+            keyword: {
+              legend: 'Write down any additional keywords (optional)'
+            },
+            services: {
+              legend: 'Select platforms to filter results (optional)'
+            },
+            country: {
+              legend: 'Select country (required if platforms are selected)',
+              info: "Availability varies by country. Select which country's platforms to check for this session."
+            }
+          },
+          create: 'Create'
         }
       },
       isNewItem: 'NEW'
@@ -183,24 +250,6 @@ const TEXTS = {
             loginProblem:
               'Account created, but automatic login failed. Please login manually'
           }
-        }
-      },
-      private: {
-        discover: {
-          searchSuggestions: [
-            'zombie movies',
-            'sci-fi thrillers',
-            'romantic comedies',
-            'time travel movies',
-            'heist films',
-            'psychological thrillers',
-            'fantasy adventure',
-            'cozy movies',
-            'post-apocalyptic',
-            'mind-bending films',
-            'superhero movies',
-            'space adventure'
-          ]
         }
       }
     }

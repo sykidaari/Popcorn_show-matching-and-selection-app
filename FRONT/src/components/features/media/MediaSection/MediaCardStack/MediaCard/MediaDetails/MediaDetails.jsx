@@ -26,7 +26,7 @@ const MediaDetails = ({ details, streamingOptions }) => {
     seasonCount
   } = details || {};
 
-  const enrichedServices = useEnrichedServices(streamingOptions);
+  const enrichedServices = useEnrichedServices({ streamingOptions });
 
   return (
     <section className='absolute top-0.5 bottom-0.5 backdrop-blur-xs p-2.5 flex items-center cursor-auto select-text max-w-full max-compact:p-1.5 '>

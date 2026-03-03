@@ -7,7 +7,7 @@ import SubmitButton from '@c/ui/form/SubmitButton/SubmitButton.jsx';
 import { useState } from 'react';
 
 const Img = ({
-  onNext,
+  onSubmit,
   onImgChange,
   legendText,
   hasButton,
@@ -50,13 +50,13 @@ const Img = ({
     onImgChange?.(f);
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    onNext({ img: file });
-  };
-
   return (
-    <Form onSubmit={onSubmit}>
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit({ img: file });
+      }}
+    >
       <Fieldset legendText={legendText}>
         <Label error={imgError}>
           {labelText}

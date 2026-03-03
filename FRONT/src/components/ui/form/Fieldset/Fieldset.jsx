@@ -1,13 +1,34 @@
+import cN from '@/utils/classNameManager';
+
 const Fieldset = ({
   legendText,
 
-  children
+  children,
+
+  className,
+
+  asDiv = false,
+
+  wide
 }) => {
+  const BoxTag = asDiv ? 'div' : 'fieldset';
+
+  const TitleTag = asDiv ? 'h2' : 'legend';
+
   return (
-    <fieldset className='fieldset bg-base-200 border-base-300 rounded-box w-full max-w-xs border p-4 relative'>
-      <legend className='fieldset-legend'>{legendText}</legend>
+    <BoxTag
+      className={cN(
+        'fieldset bg-base-200 border-base-300 rounded-box w-full max-w-xs border p-4 relative',
+        asDiv && 'pt-0 mt-4',
+        wide && 'max-w-full',
+        className
+      )}
+    >
+      <TitleTag className={cN('fieldset-legend', asDiv && 'relative bottom-4')}>
+        {legendText}
+      </TitleTag>
       {children}
-    </fieldset>
+    </BoxTag>
   );
 };
 

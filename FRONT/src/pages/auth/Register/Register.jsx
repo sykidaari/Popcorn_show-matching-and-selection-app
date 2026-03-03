@@ -5,6 +5,7 @@ import Img from '@c/features/user/userFormParts/Img/Img.jsx';
 import Locale from '@c/features/user/userFormParts/Locale/Locale.jsx';
 import Names from '@c/features/user/userFormParts/Names/Names.jsx';
 import Password from '@c/features/user/userFormParts/Password/Password.jsx';
+import ErrorMessage from '@c/ui/ErrorMessage/ErrorMessage';
 import StayLoggedInCheckBox from '@c/ui/form/StayLoggedInCheckBox/StayLoggedInCheckBox.jsx';
 import StepsVisualizer from '@c/ui/StepsVisualizer/StepsVisualizer';
 
@@ -39,7 +40,7 @@ const Register = () => {
   } = useMultiStepRegister();
 
   const sharedProps = {
-    onNext: (data) => {
+    onSubmit: (data) => {
       saveStepData(data);
       next();
     },
@@ -51,7 +52,9 @@ const Register = () => {
     <div className='w-full flex flex-col items-center gap-5'>
       <StepsVisualizer currentStep={step} totalSteps={5} />
 
-      {serverError && <p className='text-error text-sm mt-2'>{serverError}</p>}
+      {serverError && (
+        <ErrorMessage className=' text-sm mt-2' text={serverError} />
+      )}
 
       <div className='w-full'>
         {isStep(1) && <Locale {...sharedProps} legendText={localeLegend} />}
@@ -65,7 +68,7 @@ const Register = () => {
             legendText={imgLegend}
             buttonContent={imageSelected ? finishText : skipText}
             onImgChange={setImg}
-            onNext={(data) => {
+            onSubmit={(data) => {
               saveStepData(data);
               clearServerError();
               submitAll();

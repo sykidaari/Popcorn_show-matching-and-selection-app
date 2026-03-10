@@ -9,7 +9,11 @@ import ERR from '../../../../constants/domain/errorCodes.js';
 
 //* GET
 export const getRequests = getUserChild({
-  populateFields: ['friends.received.user', 'sessions.received.user']
+  populateFields: [
+    'friends.received.user',
+    'sessions.received.user',
+    'sessions.sent.user'
+  ]
 });
 
 //? The following controller factories are used in controllers of models that use requests:
@@ -131,7 +135,7 @@ export const acceptRequest =
   async (req, res, next) => {
     const {
       params: { userId: currentUserId },
-      body: { otherUserId },
+      body: { otherUserId, requestGroupId },
       status
     } = req;
 
@@ -153,6 +157,7 @@ export const acceptRequest =
             senderId,
             recipientId,
             type,
+            requestGroupId,
             isComplexOperation,
             AffectedModel,
             affectedField
@@ -168,7 +173,8 @@ export const acceptRequest =
               senderId,
               recipientId,
               affectedRecipientField,
-              affectedSenderField
+              affectedSenderField,
+              requestId
             },
             session
           );
@@ -199,7 +205,7 @@ export const removeRequest =
   async (req, res, next) => {
     const {
       params: { userId: currentUserId },
-      body: { otherUserId },
+      body: { otherUserId, requestGroupId },
       status
     } = req;
 
@@ -231,7 +237,8 @@ export const removeRequest =
           const docs = await requestsService.removeRequest({
             senderId,
             recipientId,
-            type
+            type,
+            requestGroupId
           });
 
           finalDoc = docs[resultDoc];

@@ -127,36 +127,24 @@ export const acceptSessionRequestAndJoinSession = acceptRequest({
 
     const { additionalPayload: sessionParameters, requestGroupId } = request;
 
-    let sessionDoc = await Session.findOne({ requestGroupId }).session(session);
-
-    let isNewSession = false;
-    let isNewParticipant = false;
-
-    if (!sessionDoc) {
-      const [newSession] = await Session.create(
-        [
-          {
-            ...sessionParameters,
-            participants: [{ user: senderId }, { user: recipientId }],
-            requestGroupId
-          }
-        ],
-        { session }
-      );
-
-      sessionDoc = newSession;
-      isNewSession = true;
-    } else {
-      const alreadyParticipant = sessionDoc.participants.some(
-        (p) => p.user.toString() === recipientId.toString()
-      );
-
-      if (!alreadyParticipant) {
-        sessionDoc.participants.push({ user: recipientId });
-        await sessionDoc.save({ session });
-        isNewParticipant = true;
+    const sessionDoc = await Session.findOneAndUpdate(
+      { requestGroupId },
+      {
+        $setOnInsert: {
+          ...sessionParameters,
+          requestGroupId,
+          participants: [{ user: senderId }]
+        },
+        $addToSet: {
+          participants: { user: recipientId }
+        }
+      },
+      {
+        new: true,
+        upsert: true,
+        session
       }
-    }
+    );
 
     const sessionId = sessionDoc._id;
 
@@ -169,6 +157,10 @@ export const acceptSessionRequestAndJoinSession = acceptRequest({
     const participantIds = sessionDoc.participants.map((p) =>
       p.user.toString()
     );
+
+    const isNewSession = sessionDoc.participants.length === 2;
+    const isNewParticipant = !isNewSession;
+
     if (isNewSession) {
       for (const id of participantIds) {
         emit({ from: recipientId, to: id }, SE.sessions.created);
@@ -178,10 +170,7 @@ export const acceptSessionRequestAndJoinSession = acceptRequest({
         if (id === recipientId.toString()) continue;
 
         emit(
-          {
-            from: recipientId,
-            to: id
-          },
+          { from: recipientId, to: id },
           SE.sessions.participantsChanges.participantJoined
         );
       }

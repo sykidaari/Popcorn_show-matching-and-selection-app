@@ -20,6 +20,7 @@ const withTransaction = async (fn, session = null) => {
 
     return result;
   } catch (err) {
+    console.log(err);
     if (ownSession) {
       await session.abortTransaction();
     }

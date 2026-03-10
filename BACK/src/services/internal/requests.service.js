@@ -171,6 +171,7 @@ const acceptRequest = async (
     senderId,
     recipientId,
     type,
+    requestGroupId,
     isComplexOperation = false,
     AffectedModel,
     affectedField
@@ -181,23 +182,31 @@ const acceptRequest = async (
     const { senderDoc, senderSentField, recipientDoc, recipientReceivedField } =
       await findRequestsDocsAndFields(senderId, recipientId, type, session);
 
-    const existsOnBoth =
-      listContainsUser(senderSentField, recipientId) &&
-      listContainsUser(recipientReceivedField, senderId);
+    // find the exact request
+    let requestEntry;
 
-    if (!existsOnBoth) throw customError(404, ERR.request.notFound.request);
-
-    let requestId;
-    if (isComplexOperation) {
-      const requestEntry = senderSentField.find(
+    if (requestGroupId) {
+      requestEntry = senderSentField.find(
+        (item) =>
+          item.user.toString() === recipientId.toString() &&
+          item.requestGroupId?.toString() === requestGroupId.toString()
+      );
+    } else {
+      requestEntry = senderSentField.find(
         (item) => item.user.toString() === recipientId.toString()
       );
-
-      requestId = requestEntry?._id;
     }
 
-    senderSentField.pull({ user: recipientId });
-    recipientReceivedField.pull({ user: senderId });
+    if (!requestEntry) throw customError(404, ERR.request.notFound.request);
+
+    const requestId = requestEntry._id;
+
+    // remove only this request
+    senderSentField.pull({ _id: requestId });
+    recipientReceivedField.pull({
+      user: senderId,
+      ...(requestGroupId && { requestGroupId })
+    });
 
     await senderDoc.save({ session });
     await recipientDoc.save({ session });
@@ -241,19 +250,37 @@ const acceptRequest = async (
     };
   }, session);
 
-const removeRequest = async ({ senderId, recipientId, type }, session) =>
+const removeRequest = async (
+  { senderId, recipientId, type, requestGroupId },
+  session
+) =>
   withTransaction(async (session) => {
     const { senderDoc, senderSentField, recipientDoc, recipientReceivedField } =
       await findRequestsDocsAndFields(senderId, recipientId, type, session);
 
-    const existsOnEither =
-      listContainsUser(senderSentField, recipientId) ||
-      listContainsUser(recipientReceivedField, senderId);
+    const requestEntry = senderSentField.find((item) => {
+      if (item.user.toString() !== recipientId.toString()) return false;
 
-    if (!existsOnEither) throw customError(404, ERR.request.notFound.request);
+      if (requestGroupId)
+        return item.requestGroupId?.toString() === requestGroupId.toString();
 
-    senderSentField.pull({ user: recipientId });
-    recipientReceivedField.pull({ user: senderId });
+      return true;
+    });
+
+    if (!requestEntry) throw customError(404, ERR.request.notFound.request);
+
+    const requestId = requestEntry._id;
+
+    senderSentField.pull({ _id: requestId });
+
+    if (requestGroupId) {
+      recipientReceivedField.pull({
+        user: senderId,
+        requestGroupId
+      });
+    } else {
+      recipientReceivedField.pull({ user: senderId });
+    }
 
     await senderDoc.save({ session });
     await recipientDoc.save({ session });

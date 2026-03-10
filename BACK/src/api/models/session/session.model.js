@@ -1,4 +1,4 @@
-import { model } from 'mongoose';
+import mongoose, { model } from 'mongoose';
 import {
   buildSchema,
   mediaRef,
@@ -8,8 +8,6 @@ import {
   userRefRequiredUnique
 } from '../../../utils/modelUtils.js';
 import ERR from '../../../constants/domain/errorCodes.js';
-
-// ! MISSING REQ GROUP ID
 
 export const sessionParameters = {
   sessionName: { type: String, minlength: 3, maxlength: 30 },

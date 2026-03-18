@@ -6,7 +6,7 @@ import ThemeToggle from '@c/ui/AppSettings/ThemeToggle/ThemeToggle.jsx';
 import AppLogo from '@c/ui/AppLogo/AppLogo.jsx';
 import LanguageDropdown from '@c/ui/AppSettings/LanguageDropdown/LanguageDropdown.jsx';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import HomeLink from '@c/ui/HomeLink/HomeLInk.jsx';
+import HomeLink from '@c/ui/HomeLink/HomeLink.jsx';
 
 // TODO ADD BACK FEATURE NAVLINK AND MAKE FEATURE PAGE
 const Header = () => {

@@ -13,6 +13,7 @@ const Footer = () => {
         <p>
           <span className='font-semibold italic'>{text[2]}</span> — {text[3]}
         </p>
+        <p className='text-info mt-2.5 font-semibold'>{text[4]}</p>
       </aside>
       <nav className='flex gap-2.5'>
         <a href='https://github.com/sykidaari/' target='_blank'>

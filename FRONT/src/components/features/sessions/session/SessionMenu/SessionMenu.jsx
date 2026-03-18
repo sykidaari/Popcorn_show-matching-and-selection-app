@@ -1,15 +1,23 @@
+import backend from '@/api/config/axios';
+import R from '@/constants/client/routePaths';
 import useText from '@/contexts/App/hooks/useText';
+import useCurrentUserId from '@/contexts/UserSession/hooks/useCurrentUserId';
 import useModal from '@/hooks/useModal';
 import MediaCard from '@c/features/media/MediaSection/MediaCardStack/MediaCard/MediaCard';
 import MatchModal from '@c/features/sessions/session/MatchModal/MatchModal';
 import SessionCard from '@c/features/sessions/session/SessionCard/SessionCard';
 import SessionParticipants from '@c/features/sessions/session/SessionParticipants/SessionParticipants';
+import UserProfileModal from '@c/features/user/UserProfile/UserProfileModal/UserProfileModal';
 import LoadingButtonsSection from '@c/ui/LoadingButtonsSection/LoadingButtonsSection';
 import { Menubox } from '@c/ui/MenuBox/Menubox';
 import Modal from '@c/ui/Modal/Modal';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const SessionMenu = ({ session, openSelectedUserModal }) => {
+const SessionMenu = ({ session }) => {
+  const currentUserId = useCurrentUserId();
+
   const {
     sessionDetails: detailsTitle,
     sessionOptions: {
@@ -28,12 +36,34 @@ const SessionMenu = ({ session, openSelectedUserModal }) => {
 
   const [leaveModalOpen, setleaveModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const {
     open: selectedMatchOpen,
     setOpen: setSelectedMatchOpen,
     item: selectedMatch,
     openSelectedItemModal: openSelectedMatchModal
   } = useModal();
+
+  const {
+    open: selectedParticipantModalOpen,
+    setOpen: setSelectedParticipantModalOpen,
+    item: selectedParticipant,
+    openSelectedItemModal: openSelectedParticipantModal
+  } = useModal();
+
+  const {
+    mutate: leaveSession,
+    isError: leaveIsError,
+    isPending: leaveIsPending
+  } = useMutation({
+    mutationFn: async () => {
+      await backend.patch(`/${currentUserId}/session/${session?._id}/leave`);
+    },
+    onSuccess: () => {
+      navigate(R.private.sessions.abs);
+    }
+  });
 
   return (
     <>
@@ -43,7 +73,7 @@ const SessionMenu = ({ session, openSelectedUserModal }) => {
             <SessionCard sessionParameters={session} detail>
               <SessionParticipants
                 session={session}
-                openSelectedUserModal={openSelectedUserModal}
+                openSelectedUserModal={openSelectedParticipantModal}
               />
             </SessionCard>
           </Menubox>
@@ -87,8 +117,13 @@ const SessionMenu = ({ session, openSelectedUserModal }) => {
       {leaveModalOpen && (
         <Modal open={leaveModalOpen} setOpen={setleaveModalOpen}>
           <Menubox noDivider title={leaveConfirmation} className='gap-2.5'>
-            <LoadingButtonsSection>
-              <button className='btn-warning'>{leaveYes}</button>
+            <LoadingButtonsSection
+              isError={leaveIsError}
+              isLoading={leaveIsPending}
+            >
+              <button className='btn-warning' onClick={leaveSession}>
+                {leaveYes}
+              </button>
               <button onClick={() => setleaveModalOpen(false)}>
                 {leaveNo}
               </button>
@@ -104,6 +139,15 @@ const SessionMenu = ({ session, openSelectedUserModal }) => {
           specifyShowType={!!session?.includedMedia?.mediaType}
           media={selectedMatch}
           notNew
+        />
+      )}
+
+      {selectedParticipant && (
+        <UserProfileModal
+          noFriendshipButtons
+          userId={selectedParticipant?._id}
+          open={selectedParticipantModalOpen}
+          setOpen={setSelectedParticipantModalOpen}
         />
       )}
     </>

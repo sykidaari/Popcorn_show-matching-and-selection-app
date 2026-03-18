@@ -105,6 +105,14 @@ const TEXTS = {
             sessions: {
               title: 'Sent session requests'
             }
+          },
+          logout: {
+            title: 'Logout',
+            confirmation: {
+              title: 'Are you sure you wish to logout from your account?',
+              yes: 'Yes',
+              no: 'No'
+            }
           }
         }
       },
@@ -240,7 +248,8 @@ const TEXTS = {
           devMessage: {
             1: 'Developed by',
             2: 'Demo App',
-            3: 'For Showcase Purposes Only'
+            3: 'For Showcase Purposes Only',
+            4: 'Undergoing development, feel free to explore. All existing/visible features are functional! You can contact me on k.mikae.lieb@gmail.com for anything you might need'
           }
         }
       },
@@ -317,11 +326,30 @@ const TEXTS = {
       error: {
         serverProblem:
           'Algo salió mal. Por favor, actualiza la página o inténtalo de nuevo más tarde.'
-      }
+      },
+      searchBar: { noResults: 'No se encontraron resultados' },
+      next: 'Siguiente',
+
+      keywordSuggestions: [
+        'películas de zombis',
+        'thrillers de ciencia ficción',
+        'comedias románticas',
+        'películas de viajes en el tiempo',
+        'películas de robos',
+        'thrillers psicológicos',
+        'aventura fantástica',
+        'películas acogedoras',
+        'postapocalíptico',
+        'películas que te hacen pensar',
+        'películas de superhéroes',
+        'aventura espacial'
+      ]
     },
 
     features: {
       user: {
+        relation: { self: 'Yo', friend: 'Amigo' },
+
         userFormParts: {
           next: 'Siguiente',
           locale: {
@@ -364,8 +392,184 @@ const TEXTS = {
             tooBig: 'El archivo es demasiado grande (máx. 5MB).',
             wrongFormat: 'Solo se permiten formatos JPG, PNG o WEBP.'
           }
+        },
+
+        currentUser: {
+          friendsSection: {
+            title: 'Amigos',
+            noFriends: 'Tu lista de amigos está vacía.',
+            search: 'Buscar en tus amigos'
+          },
+          sessionsSection: {
+            title: 'Sesiones',
+            noSessions: 'No formas parte de ninguna sesión en este momento.'
+          },
+          receivedRequests: {
+            from: 'De',
+            noRequests: 'No tienes solicitudes pendientes.',
+            friends: {
+              title: 'Solicitudes de amistad'
+            },
+            sessions: {
+              title: 'Solicitudes de sesión recibidas',
+              invitationFrom: 'Invitado por'
+            }
+          },
+          sentRequests: {
+            to: 'Para',
+            invited: 'Invitado',
+            noRequests: 'No tienes solicitudes enviadas pendientes.',
+            sessions: {
+              title: 'Solicitudes de sesión enviadas'
+            }
+          },
+          logout: {
+            title: 'Cerrar sesión',
+            confirmation: {
+              title: '¿Seguro que deseas cerrar sesión de tu cuenta?',
+              yes: 'Sí',
+              no: 'No'
+            }
+          }
         }
-      }
+      },
+
+      media: {
+        showTypes: { movie: 'Película', series: 'Serie' },
+        detailsTitles: {
+          releaseYear: 'Año de estreno',
+          rating: 'Valoración',
+          directors: 'Directores',
+          creators: 'Creadores',
+          cast: 'Reparto',
+          runtime: 'Duración',
+          seasonCount: 'Temporadas',
+          streamingOptions: 'Disponible en'
+        },
+        noResults: '¡Lo sentimos! No hay resultados para tus preferencias.',
+        noneLeft:
+          '¡Lo sentimos! No quedan más resultados que coincidan con tus preferencias.'
+      },
+
+      people: {
+        usersSearch: { placeholder: 'Buscar otros usuarios' },
+        friendship: {
+          requestFriendship: 'Enviar solicitud de amistad',
+          acceptFriendship: 'Aceptar solicitud de amistad',
+          cancelFriendRequest: 'Cancelar solicitud de amistad',
+          rejectFriendship: 'Rechazar solicitud de amistad',
+          removeFriendship: 'Eliminar amigo'
+        }
+      },
+
+      sessions: {
+        invitations: {
+          sendInvitation: 'Enviar invitación a sesión',
+          acceptInvitation: 'Aceptar y unirse',
+          rejectInvitation: 'Rechazar invitación',
+          cancelInvitation: 'Cancelar invitación a sesión'
+        },
+        openSession: 'Abrir sesión',
+        createSession: 'Crear nueva sesión',
+        noFriends:
+          '¡Aún no tienes amigos! Añade amigos primero para iniciar una sesión',
+
+        session: {
+          untitled: 'Sesión sin título',
+
+          invite: {
+            title: 'Invitar amigos',
+            maxAmount: 'Las sesiones pueden tener hasta 6 participantes'
+          },
+
+          parameters: {
+            title: 'Diseña tu sesión',
+            name: {
+              legend: 'Ponle nombre a tu sesión (opcional)',
+              tooShort: 'Debe tener al menos 3 caracteres',
+              tooLong: 'No puede tener más de 30 caracteres'
+            },
+            mediaType: {
+              legend: '¿Qué contenido quieres ver?',
+              options: { all: 'Todo', movie: 'Películas', series: 'Series' }
+            },
+            genres: {
+              legend: 'Elige géneros (opcional — por defecto todos)',
+              info: 'Menos géneros hacen los resultados más específicos.',
+              options: {
+                action: 'Acción',
+                adventure: 'Aventura',
+                animation: 'Animación',
+                comedy: 'Comedia',
+                crime: 'Crimen',
+                documentary: 'Documental',
+                drama: 'Drama',
+                family: 'Familiar',
+                fantasy: 'Fantasía',
+                history: 'Historia',
+                horror: 'Terror',
+                music: 'Música',
+                mystery: 'Misterio',
+                news: 'Noticias',
+                reality: 'Reality',
+                romance: 'Romance',
+                scifi: 'Ciencia ficción',
+                talk: 'Talk show',
+                thriller: 'Thriller',
+                war: 'Guerra',
+                western: 'Western'
+              }
+            },
+            keyword: {
+              legend: 'Escribe palabras clave adicionales (opcional)'
+            },
+            services: {
+              legend:
+                'Selecciona plataformas para filtrar resultados (opcional)'
+            },
+            country: {
+              legend: 'Selecciona país (obligatorio si eliges plataformas)',
+              info: 'La disponibilidad varía según el país. Selecciona el país cuyas plataformas deseas comprobar para esta sesión.'
+            }
+          },
+
+          create: 'Crear',
+          created: {
+            title: '¡Sesión creada! Ahora esperando a que otros se unan.',
+            button: '¡Ok!'
+          },
+
+          participants: 'Participantes',
+
+          menu: {
+            open: 'Abrir menú',
+            close: 'Cerrar menú',
+            sessionDetails: 'Detalles de la sesión',
+
+            sessionOptions: {
+              title: 'Opciones',
+              options: {
+                leaveSession: {
+                  title: 'Salir de la sesión',
+                  confirmation: '¿Seguro que deseas salir de esta sesión?',
+                  yes: 'Sí, salir',
+                  no: 'No, quedarse'
+                }
+              }
+            },
+
+            matchedMedias: {
+              title: 'Contenido coincidente',
+              none: 'Aún no habéis coincidido en ningún contenido. ¡Seguid deslizando!'
+            }
+          },
+
+          newMatch: '¡NUEVA COINCIDENCIA!'
+        }
+      },
+
+      isNewItem: 'NUEVO',
+      isUpdatedItem: 'NUEVA ACTIVIDAD'
     },
 
     layouts: {
@@ -375,8 +579,17 @@ const TEXTS = {
           devMessage: {
             1: 'Desarrollado por',
             2: 'App de demostración',
-            3: 'Solo con fines de exhibición'
+            3: 'Solo con fines de exhibición',
+            4: 'Bajo desarrollo, siéntase libre de explorar. Todas los apartados existentes/visibles funcionan! Me puede contactar en k.mikae.lieb@gmail.com para cualquier cosa que necesite'
           }
+        }
+      },
+      private: {
+        pageTitles: {
+          discover: 'Descubrir',
+          people: 'Personas',
+          sessions: 'Sesiones',
+          profile: 'Perfil'
         }
       }
     },
@@ -394,7 +607,7 @@ const TEXTS = {
           rememberedUsers: {
             welcomeBack: {
               title: '¡Bienvenido de nuevo!',
-              text: 'Encuentra tu próxima película o serie. Inicia sesión para descubrir qué ver juntos.'
+              text: 'Encuentra tu próxima gran película o serie. Inicia sesión para descubrir qué ver juntos.'
             },
             forgetAccount: 'Olvidar esta cuenta',
             otherAccount: 'Iniciar sesión con otra cuenta'
@@ -413,6 +626,7 @@ const TEXTS = {
             linkText: 'Únete ahora'
           }
         },
+
         register: {
           legends: {
             locale:
@@ -423,7 +637,11 @@ const TEXTS = {
             img: 'Sube una foto de perfil (opcional)'
           },
           skipAndFinish: 'Omitir y finalizar registro',
-          finish: 'Finalizar registro'
+          finish: 'Finalizar registro',
+          errors: {
+            loginProblem:
+              'Cuenta creada, pero el inicio de sesión automático falló. Por favor inicia sesión manualmente'
+          }
         }
       }
     }

@@ -220,3 +220,9 @@ export const buildShowsToRender = (
 
   return showsToRender;
 };
+
+export const findCurrentParticipant = (session, currentUserId) =>
+  session.participants.find((p) => p.user._id === currentUserId);
+
+export const isTodayCheck = (date) =>
+  new Date(date).toDateString() === new Date().toDateString();

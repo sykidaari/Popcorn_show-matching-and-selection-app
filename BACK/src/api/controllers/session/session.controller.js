@@ -389,7 +389,7 @@ export const updateFeedCursor = async (req, res, next) => {
 
     await session.save();
 
-    res.status(200).json({ message: OK.sessions.feedCursor.updated });
+    res.status(200);
   } catch (err) {
     next(err);
   }

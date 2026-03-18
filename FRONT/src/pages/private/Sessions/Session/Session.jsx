@@ -9,6 +9,8 @@ import useEffectIgnoreDeps from '@/hooks/useEffectIgnoreDeps';
 import useModal from '@/hooks/useModal';
 import {
   buildShowsToRender,
+  findCurrentParticipant,
+  isTodayCheck,
   normalizeMediaForBackend
 } from '@/pages/private/Sessions/Session/helpers';
 import MediaSection from '@c/features/media/MediaSection/MediaSection';
@@ -49,6 +51,21 @@ const Session = () => {
       return data;
     }
   });
+
+  const currentParticipant =
+    session && findCurrentParticipant(session, currentUserId);
+  const isToday = isTodayCheck(currentParticipant?.feedCursor?.date);
+
+  const { mutate: updateFeedCursor } = useMutation({
+    mutationFn: async (cursor) => {
+      if (!currentParticipant.feedCursor || !isToday)
+        await backend.patch(
+          `/${currentUserId}/session/${sessionId}/feed-cursor`,
+          { cursor }
+        );
+    }
+  });
+
   const { includedMedia = {} } = session || {};
   const {
     shows: newShows,
@@ -57,17 +74,24 @@ const Session = () => {
     hasNextPage,
     isFetching,
     fetchNextPage
-  } = useFetchMedias({
-    ...(includedMedia.mediaType && {
-      showType: includedMedia.mediaType
-    }),
-    ...(includedMedia.availability?.services?.length && {
-      services: includedMedia.availability.services,
-      countryCode: includedMedia.availability.country
-    }),
-    ...(includedMedia.genres && { genres: includedMedia.genres }),
-    ...(includedMedia.keyWord && { keyword: includedMedia.keyWord })
-  });
+  } = useFetchMedias(
+    {
+      ...(includedMedia.mediaType && {
+        showType: includedMedia.mediaType
+      }),
+      ...(includedMedia.availability?.services?.length && {
+        services: includedMedia.availability.services,
+        countryCode: includedMedia.availability.country
+      }),
+      ...(includedMedia.genres && { genres: includedMedia.genres }),
+      ...(includedMedia.keyWord && { keyword: includedMedia.keyWord })
+    },
+    currentParticipant?.feedCursor && isToday
+      ? currentParticipant.feedCursor.cursor
+      : null,
+    updateFeedCursor,
+    !!session
+  );
 
   const {
     open: newMatchModalOpen,

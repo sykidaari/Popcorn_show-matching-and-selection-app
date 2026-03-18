@@ -1,5 +1,4 @@
 import R from '@/constants/client/routePaths.js';
-import Notifications from '@/pages/private/Notifications/Notifications.jsx';
 import Profile from '@/pages/private/Profile/Profile.jsx';
 import Sessions from '@/pages/private/Sessions/Sessions.jsx';
 import Settings from '@/pages/private/Settings/Settings.jsx';
@@ -70,10 +69,6 @@ function App() {
           <Route path={R.private.discover.rel} element={<Discover />} />
           <Route path={R.private.people.rel} element={<People />} />
           <Route path={R.private.profile.rel} element={<Profile />} />
-          {/* <Route
-            path={R.private.notifications.rel}
-            element={<Notifications />}
-          /> */}
           <Route path={R.private.sessions.rel}>
             <Route index element={<Sessions />} />
             <Route

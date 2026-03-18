@@ -18,6 +18,7 @@ import { compare as compareEncryption } from 'bcrypt';
 import withTransaction from '../../../utils/transactionWrapper.js';
 import ERR from '../../../constants/domain/errorCodes.js';
 import OK from '../../../constants/domain/successCodes.js';
+import UserAccessSession from '../../models/userAccessSession/userAccessSession.model.js';
 
 // * GET
 

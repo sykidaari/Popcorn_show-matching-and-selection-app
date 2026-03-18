@@ -31,12 +31,11 @@ const CreateSession = () => {
 
   const { mutate, isError, isPending, isSuccess } = useMutation({
     mutationFn: async (data) => {
-      console.log('sending data:', data);
       const { data: resData } = await backend.patch(
         `/${currentUserId}/session/request/send`,
         data
       );
-      console.log('res data:', resData);
+
       return resData;
     }
   });

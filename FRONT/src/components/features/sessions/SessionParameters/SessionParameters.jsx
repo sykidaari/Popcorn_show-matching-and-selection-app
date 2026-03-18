@@ -129,7 +129,7 @@ const SessionParameters = ({ onSubmit }) => {
         <Fieldset asDiv legendText={genresLegendText} wide>
           <InfoToolTip
             text={genresInfoText}
-            className='absolute right-2.5 -top-2.5 max-mobile:tooltip-left'
+            className='absolute right-2.5 -top-2.5 tooltip-left'
           />
           <GenresBadgesList
             genres={genresOptions}
@@ -181,7 +181,7 @@ const SessionParameters = ({ onSubmit }) => {
                   defaultValue={currentCountryCode}
                 />
                 <InfoToolTip
-                  className='min-w-6 min-h-6 max-mobile:tooltip-left pt-2.5'
+                  className='min-w-6 min-h-6 tooltip-left pt-2.5'
                   text={countryInfoText}
                 />
               </div>

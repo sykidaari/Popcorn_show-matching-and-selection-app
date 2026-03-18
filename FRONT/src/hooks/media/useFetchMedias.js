@@ -1,8 +1,14 @@
 import backend from '@/api/config/axios.js';
 import useAppContext from '@/contexts/App/hooks/useAppContext.js';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-const useFetchMedias = (optionalParams = {}, initialCursor = null) => {
+const useFetchMedias = (
+  optionalParams = {},
+  initialCursor = null,
+  onNewCursor,
+  enabled = true
+) => {
   const {
     state: { language, country }
   } = useAppContext();
@@ -30,12 +36,21 @@ const useFetchMedias = (optionalParams = {}, initialCursor = null) => {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    refetchOnMount: false
+    refetchOnMount: false,
+    enabled
   });
 
   const shows = query.data?.pages
     ? query.data.pages.flatMap((p) => p.shows)
     : [];
+
+  const lastPage = query.data?.pages?.[query.data.pages.length - 2];
+  const currentCursor = lastPage?.nextCursor;
+
+  useEffect(() => {
+    if (!currentCursor || !onNewCursor) return;
+    onNewCursor(currentCursor);
+  }, [currentCursor, onNewCursor]);
 
   return {
     shows,

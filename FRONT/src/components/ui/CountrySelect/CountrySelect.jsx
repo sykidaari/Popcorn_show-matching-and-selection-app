@@ -7,7 +7,7 @@ const CountrySelect = ({ text, onChange, defaultValue, ...props }) => {
       {text}
       <select
         className='select w-full'
-        onChange={(e) => onChange(e)}
+        onChange={(e) => onChange(e.target.value)}
         defaultValue={defaultValue}
         {...props}
       >

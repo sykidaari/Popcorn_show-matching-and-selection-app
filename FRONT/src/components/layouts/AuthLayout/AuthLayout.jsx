@@ -1,4 +1,4 @@
-import HomeLink from '@c/ui/HomeLink/nk.jsx';
+import HomeLink from '@c/ui/HomeLink/HomeLink';
 import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {

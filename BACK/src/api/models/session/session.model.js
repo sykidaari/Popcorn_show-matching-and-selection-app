@@ -41,7 +41,12 @@ const SessionSchema = buildSchema(
         {
           user: userRefRequired,
 
-          matchProposals: [mediaRef]
+          matchProposals: [mediaRef],
+
+          feedCursor: {
+            cursor: String,
+            date: Date
+          }
         }
       ],
       validate: {

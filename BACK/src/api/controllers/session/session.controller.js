@@ -112,7 +112,6 @@ export const acceptSessionRequestAndJoinSession = acceptRequest({
 
   sideEffect: async (
     {
-      senderDoc,
       senderId,
       recipientId,
       affectedSenderDoc,
@@ -368,6 +367,29 @@ export const discardMedia = async (req, res, next) => {
     }
 
     return res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateFeedCursor = async (req, res, next) => {
+  const {
+    session,
+    params: { userId: currentUserId },
+    body: { cursor }
+  } = req;
+
+  try {
+    const { currentParticipant } = splitParticipants(session, currentUserId);
+
+    currentParticipant.feedCursor = {
+      cursor,
+      date: new Date()
+    };
+
+    await session.save();
+
+    res.status(200).json({ message: OK.sessions.feedCursor.updated });
   } catch (err) {
     next(err);
   }

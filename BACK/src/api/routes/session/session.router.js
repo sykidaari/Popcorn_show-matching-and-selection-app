@@ -10,7 +10,8 @@ import {
   markAllReceivedSessionsRequestsAsSeen,
   proposeMatch,
   rejectSessionRequest,
-  sendSessionRequest
+  sendSessionRequest,
+  updateFeedCursor
 } from '../../controllers/session/session.controller.js';
 import {
   requireAdmin,
@@ -100,7 +101,10 @@ requestRouter
     rejectSessionRequest
   );
 
-existingSessionRouter.get('/', getSessionById).patch('/leave', leaveSession);
+existingSessionRouter
+  .get('/', getSessionById)
+  .patch('/leave', leaveSession)
+  .patch('/feed-cursor', [requireSelf], updateFeedCursor);
 
 interactRouter
   .patch('/propose-match', [validateFullMediaData, saveMedia], proposeMatch)

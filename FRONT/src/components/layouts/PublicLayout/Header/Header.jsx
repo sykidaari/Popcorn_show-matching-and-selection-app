@@ -1,5 +1,5 @@
 import R from '@/constants/client/routePaths.js';
-import useText from '@/contexts/App/hooks/useText.js';
+// import useText from '@/contexts/App/hooks/useText.js';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import cN from '@/utils/classNameManager.js';
 import ThemeToggle from '@c/ui/AppSettings/ThemeToggle/ThemeToggle.jsx';
@@ -8,8 +8,9 @@ import LanguageDropdown from '@c/ui/AppSettings/LanguageDropdown/LanguageDropdow
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import HomeLink from '@c/ui/HomeLink/HomeLInk.jsx';
 
+// TODO ADD BACK FEATURE NAVLINK AND MAKE FEATURE PAGE
 const Header = () => {
-  const featureText = useText('layouts.public.nav.feature');
+  // const featureText = useText('layouts.public.nav.feature');
   const { pathname } = useLocation();
 
   const isLanding = pathname === '/';
@@ -28,7 +29,7 @@ const Header = () => {
         </div>
 
         <div className='mobile:navbar-start'>
-          <NavLink
+          {/* <NavLink
             to={R.public.feature.abs}
             className={({ isActive }) =>
               cN(
@@ -38,7 +39,7 @@ const Header = () => {
             }
           >
             {featureText}
-          </NavLink>
+          </NavLink> */}
         </div>
         <div className='max-mobile:hidden navbar-center'>
           <HomeLink withText />

@@ -2,7 +2,7 @@ import backend from '@/api/config/axios.js';
 import useAppContext from '@/contexts/App/hooks/useAppContext.js';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-const useFetchMedias = (optionalParams = {}) => {
+const useFetchMedias = (optionalParams = {}, initialCursor = null) => {
   const {
     state: { language, country }
   } = useAppContext();
@@ -12,6 +12,7 @@ const useFetchMedias = (optionalParams = {}) => {
   const query = useInfiniteQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ['fetchMedias', paramsKey, country, language],
+    initialPageParam: initialCursor,
     queryFn: async ({ pageParam = null }) => {
       const params = {
         // ALLOWS OVERRIDES

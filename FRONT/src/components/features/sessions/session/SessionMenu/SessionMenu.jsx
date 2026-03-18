@@ -57,7 +57,7 @@ const SessionMenu = ({ session, openSelectedUserModal }) => {
           </Menubox>
         </div>
 
-        <div className='divider divider-neutral max-mobile:hidden' />
+        <div className='divider divider-neutral max-mobile:hidden mx-2.5' />
         <Menubox noDivider title={matchedTitle} bigTitle className='gap-5'>
           {session?.matchedMedias?.length ? (
             <ul className='flex flex-wrap justify-center gap-2.5'>

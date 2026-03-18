@@ -40,7 +40,7 @@ const MediaDetails = ({ details, streamingOptions }) => {
         <div className='flex flex-col gap-2.5'>
           {releaseYear && (
             <p>
-              <span className='font-semibold'>{releaseYearTitle}:</span>
+              <span className='font-semibold'>{releaseYearTitle}:</span>{' '}
               {releaseYear}
             </p>
           )}

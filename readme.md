@@ -38,6 +38,8 @@ BACKEND/README contains short explanations of all backend routes
 - Socket.io for websocket
 - `Streaming availability`: this is the external API used for medias. My own Express server works partially as a sort of proxy for this API. Here's the API https://docs.movieofthenight.com/
 
+The backend routes all have different access levels, so the application is very secure. Authentification is handled via cookie access sessions and rotating tokens.
+
 **FRONTEND** stack:
 
 - React with react-router

@@ -17,7 +17,7 @@ const Landing = () => {
         <section className='relative z-1 my-2.5 small:my-5 p-2.5 small:p-7 glass h-fit rounded-box shadow bg-base-100 flex flex-col gap-5 items-center'>
           <h2 className='text-xl text-center'>
             <Slogan />
-          </h2>
+          </h2> 
 
           <div className='flex flex-col justify-center items-center w-full gap-1.5 *:w-full *:btn *:btn-xl *:max-mini:btn-lg text-nowrap'>
             {' '}

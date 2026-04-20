@@ -11,11 +11,13 @@ const CountrySelect = ({ text, onChange, defaultValue, ...props }) => {
         defaultValue={defaultValue}
         {...props}
       >
-        {COUNTRIES_AND_SERVICES.map(({ countryCode, country }) => (
-          <option key={countryCode} value={countryCode}>
-            {country}
-          </option>
-        ))}
+        {[...COUNTRIES_AND_SERVICES]
+          .sort((a, b) => a.country.localeCompare(b.country))
+          .map(({ countryCode, country }) => (
+            <option key={countryCode} value={countryCode}>
+              {country}
+            </option>
+          ))}
       </select>
     </Label>
   );

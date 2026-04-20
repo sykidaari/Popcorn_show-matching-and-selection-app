@@ -13,6 +13,7 @@ export const isServerProblem = (error, knownErrorsArray) => {
   if (!error) return false;
 
   const code = backendErrorMessage(error);
+
   return !error?.response || !knownErrorsArray.includes(code);
 };
 

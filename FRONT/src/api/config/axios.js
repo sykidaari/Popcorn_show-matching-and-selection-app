@@ -1,6 +1,7 @@
 import requestContext, {
   updateRequestContext
 } from '@/api/config/requestContext.js';
+import ERR from '@/constants/domain/errorCodes';
 import { BACKEND_BASE_URL } from '@/utils/env.js';
 import axios from 'axios';
 
@@ -27,6 +28,8 @@ backend.interceptors.request.use((config) => {
   return config;
 });
 
+const exceptions401 = [ERR.user.auth.incorrectCredentials];
+
 // TO GET NEW ACCESSTOKEN VIA REFRESHTOKEN
 let isRefreshing = false;
 let pendingRequests = [];
@@ -42,7 +45,11 @@ backend.interceptors.response.use(
     }
 
     // SKIP: other errors, not token related
-    if (err.response?.status !== 401) return Promise.reject(err);
+    if (
+      err.response?.status !== 401 ||
+      exceptions401.includes(err.response?.data?.error)
+    )
+      return Promise.reject(err);
 
     // SKIP: retry, prevent infinite loop
     if (originalReq._retry) return Promise.reject(err);

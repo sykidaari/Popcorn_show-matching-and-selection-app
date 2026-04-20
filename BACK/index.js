@@ -37,8 +37,6 @@ app.set('trust proxy', 1);
 app.use(express.json());
 app.use(cookieParser());
 
-// Once front is deployed, add it to deployed backs process.env, and only front will be able to access
-
 await connectDB();
 
 app.use('/api/v1', mainRouter);

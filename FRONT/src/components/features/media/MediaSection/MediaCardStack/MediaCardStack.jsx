@@ -25,6 +25,7 @@ const MediaCardStack = ({
 
   const doPositive = () => {
     if (!current) return;
+
     onPositive?.(current);
     setIndex((i) => i + 1);
 
@@ -49,8 +50,8 @@ const MediaCardStack = ({
   const handleEnd = (_, info) => {
     const offset = direction === 'x' ? info.offset.x : info.offset.y;
 
-    if (offset > threshold) doPositive();
-    else if (offset < -threshold) doNegative();
+    if (offset > threshold && onPositive) doPositive();
+    else if (offset < -threshold && onNegative) doNegative();
   };
 
   const [isCurrentLoaded, setIsCurrentLoaded] = useState(false);

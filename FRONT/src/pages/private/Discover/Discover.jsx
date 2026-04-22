@@ -49,8 +49,8 @@ const Discover = () => {
         hasNextPage={hasNextPage}
         swipeDirection='y'
         specifyShowType
+        // works as advance!
         onNegative={advance}
-        onPositive={advance}
         PositiveButton={({ onClick }) => (
           <button onClick={onClick} className='btn-secondary'>
             <ChevronUpIcon />

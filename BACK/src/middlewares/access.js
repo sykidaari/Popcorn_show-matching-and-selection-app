@@ -41,8 +41,6 @@ export const setIsSelf = (req, res, next) => {
 export const requireGuest = (req, res, next) => {
   const { user } = req;
 
-  console.log(user);
-
   if (user) throw customError(403, ERR.access.alreadyLoggedIn);
   next();
 };

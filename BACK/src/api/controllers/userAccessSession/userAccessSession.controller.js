@@ -16,11 +16,11 @@ export const refreshAccessToken = async (req, res, next) => {
   const requestId = crypto.randomUUID();
   const now = new Date();
 
-  console.log(`[REFRESH START] ${now.toISOString()} id=${requestId}`);
+  // console.log(`[REFRESH START] ${now.toISOString()} id=${requestId}`);
 
   const refreshToken = req.cookies?.refreshToken;
   if (!refreshToken) {
-    console.log(`[REFRESH 401 NO COOKIE] id=${requestId}`);
+    // console.log(`[REFRESH 401 NO COOKIE] id=${requestId}`);
     return res.sendStatus(401);
   }
 
@@ -38,11 +38,11 @@ export const refreshAccessToken = async (req, res, next) => {
     });
 
     if (!session) {
-      console.log(`[REFRESH 401 NO SESSION] id=${requestId} hash=${tokenHash}`);
+      // console.log(`[REFRESH 401 NO SESSION] id=${requestId} hash=${tokenHash}`);
       return res.sendStatus(401);
     }
     if (session.expiresAt < now) {
-      console.log(`[REFRESH 401 EXPIRED] id=${requestId}`);
+      // console.log(`[REFRESH 401 EXPIRED] id=${requestId}`);
       return res.sendStatus(401);
     }
 
@@ -80,7 +80,7 @@ export const refreshAccessToken = async (req, res, next) => {
 
     const accessToken = generateAccessToken(session.user);
 
-    console.log(`[REFRESH SUCCESS] id=${requestId}`);
+    // console.log(`[REFRESH SUCCESS] id=${requestId}`);
     return res.status(200).json({ accessToken });
   } catch (err) {
     next(err);

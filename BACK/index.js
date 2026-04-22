@@ -30,7 +30,7 @@ app.use(
     credentials: true
   })
 );
-console.log('CORS allowed origin:', process.env.FRONTEND_URL);
+// console.log('CORS allowed origin:', process.env.FRONTEND_URL);
 // necessary for rate limiting to work correctly in build (deploy)
 app.set('trust proxy', 1);
 

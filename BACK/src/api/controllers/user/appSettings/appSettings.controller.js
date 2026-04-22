@@ -6,7 +6,7 @@ export const getAppSettings = getUserChild();
 
 //* PATCH
 export const editAppSettings = async (req, res, next) => {
-  console.log('PATCH BODY:', req.body);
+  // console.log('PATCH BODY:', req.body);
   const {
     doc: appSettings,
     status,

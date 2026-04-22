@@ -1,4 +1,5 @@
 import backend from '@/api/config/axios';
+import { updateRequestContext } from '@/api/config/requestContext';
 import R from '@/constants/client/routePaths';
 import useText from '@/contexts/App/hooks/useText';
 import useCurrentUserId from '@/contexts/UserSession/hooks/useCurrentUserId.js';
@@ -36,7 +37,10 @@ const Profile = () => {
     mutationFn: async () => {
       await backend.delete('/user');
     },
-    onSuccess: () => contextlogout()
+    onSuccess: () => {
+      updateRequestContext({ accessToken: null });
+      contextlogout();
+    }
   });
 
   return (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
-import { motion } from 'motion/react';
+import { motion, useAnimation } from 'motion/react';
 import MediaCard from '@c/features/media/MediaSection/MediaCardStack/MediaCard/MediaCard.jsx';
 import cN from '@/utils/classNameManager.js';
 
@@ -55,6 +55,8 @@ const MediaCardStack = ({
 
   const [isCurrentLoaded, setIsCurrentLoaded] = useState(false);
 
+  const controls = useAnimation();
+
   return (
     <div className='flex flex-col  h-full items-center justify-center gap-3 max-compact:gap-1.5'>
       <div
@@ -75,6 +77,15 @@ const MediaCardStack = ({
             drag={direction}
             dragElastic={0.2}
             whileDrag={{ scale: 0.9 }}
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            onDrag={(e, info) => {
+              if (direction !== 'y') return;
+
+              if (info.offset.y > 0) {
+                controls.set({ y: 0 });
+              }
+            }}
+            animate={controls}
             onDragEnd={handleEnd}
             className='relative z-10 cursor-grab active:cursor-grabbing flex items-center justify-center w-fit h-full min-w-0'
           >
